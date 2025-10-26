@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Logic and Computer Addition - Interactive Educational Site</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Logic and Computer Addition Educational Website" name="keywords">
+    <meta content="Interactive Educational Website on Logic and Computer Addition based on Boolean Logic" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet"> 
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+    
+    <style>
+        /* Section-specific styles for educational content */
+        .section-nav {
+            padding: 100px 0 50px;
+        }
+        
+        .nav-link {
+            scroll-behavior: smooth;
+        }
+        
+        .operator-card {
+            perspective: 1000px;
+            margin: 20px 0;
+        }
+        
+        .operator-card-inner {
+            position: relative;
+            width: 100%;
+            height: 520px;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        
+        .operator-front, .operator-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .operator-back {
+            transform: rotateY(180deg);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .operator-front {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+        
+        .truth-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .truth-table th, .truth-table td {
+            border: 2px solid #333;
+            padding: 12px;
+            text-align: center;
+        }
+        
+        .truth-table th {
+            background-color: #4e73df;
+            color: white;
+        }
+        
+        .truth-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        
+        .quiz-question {
+            background: #f8f9fa;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border-left: 5px solid #4e73df;
+        }
+        
+        .quiz-option {
+            padding: 15px;
+            margin: 10px 0;
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .quiz-option:hover {
+            background: #e3f2fd;
+            border-color: #4e73df;
+        }
+        
+        .quiz-option.selected {
+            background: #2196F3;
+            color: white;
+            border-color: #2196F3;
+        }
+        
+        .quiz-option.correct {
+            background: #4caf50;
+            color: white;
+            border-color: #4caf50;
+        }
+        
+        .quiz-option.incorrect {
+            background: #f44336;
+            color: white;
+            border-color: #f44336;
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .smooth-scroll {
+            scroll-behavior: smooth;
+        }
+        
+        .section-highlight {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 0;
+        }
+        
+        .binary-demo {
+            background: #1a1a1a;
+            color: #0f0;
+            padding: 30px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.5em;
+        }
+        
+        .bit-toggle {
+            display: inline-block;
+            padding: 15px 30px;
+            margin: 10px;
+            background: #333;
+            color: #0f0;
+            border: 2px solid #0f0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .bit-toggle:hover {
+            background: #0f0;
+            color: #000;
+        }
+        
+        .bit-toggle.active {
+            background: #0f0;
+            color: #000;
+        }
+
+        .operator-card.flipped .operator-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .tt-true {
+            color: #27ae60 !important;
+            font-weight: bold;
+            background: rgba(39,174,96,0.12);
+        }
+        .tt-false {
+            color: #e74c3c !important;
+            font-weight: bold;
+            background: rgba(231,76,60,0.12);
+        }
+        .flipcard-table-black {
+            background: #dddddd !important;
+            color: #fff !important;
+        }
+        .flipcard-table-black th, .flipcard-table-black td {
+            border-color: #fff !important;
+        }
+        .operator-card.flipped .operator-back table,
+        .operator-card.flipped .operator-back th,
+        .operator-card.flipped .operator-back td {
+            color: #222 !important;
+        }
+        .chapter4-table-black {
+            color: #222 !important;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar Start -->
+    <div class="container-fluid p-0">
+        <nav class="navbar navbar-expand-lg bg-white navbar-light py-3 py-lg-0 px-lg-5">
+            <a href="index.html" class="navbar-brand ml-lg-3">
+                <h1 class="m-0 text-uppercase text-primary"><i class="fa fa-book-reader mr-3"></i>Logic & Computers</h1>
+            </a>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-between px-lg-3" id="navbarCollapse">
+                <div class="navbar-nav mx-auto py-0">
+                    <a href="#home" class="nav-item nav-link">Home</a>
+                    <a href="#propositions" class="nav-item nav-link">Propositions</a>
+                    <a href="#operators" class="nav-item nav-link">Operators</a>
+                    <a href="#compounds" class="nav-item nav-link">Compounds</a>
+                    <a href="#equivalence" class="nav-item nav-link">Equivalence</a>
+                    <a href="#computers" class="nav-item nav-link">Binary Logic</a>
+                    <a href="#quiz" class="nav-item nav-link">Quiz</a>
+                        </div>
+            </div>
+        </nav>
+    </div>
+    <!-- Navbar End -->
+
+    <!-- Homepage/Introduction Section -->
+    <div id="home" class="jumbotron jumbotron-fluid position-relative overlay-bottom" style="margin-bottom: 90px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+        <div class="container text-center my-5 py-5">
+            <h1 class="text-white mt-4 mb-4">Logic and Computer Addition</h1>
+            <h2 class="text-white display-4 mb-5">Understanding the Foundations of Logical Reasoning</h2>
+            <p class="text-white mx-auto mb-5" style="max-width: 800px; font-size: 1.2em;">
+                Explore the fundamental principles of mathematical logic—how propositions, logical operators, and truth tables are used to evaluate statements and reasoning in logical systems.
+            </p>
+            <div class="mt-5">
+                <a href="#propositions" class="btn btn-light btn-lg mr-3">Start Learning</a>
+                        </div>
+                    </div>
+                    </div>
+
+    <!-- Section 1: Propositions -->
+    <div id="propositions" class="container-fluid py-5 section-nav">
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-lg-12 text-center mb-5">
+                    <h6 class="d-inline-block position-relative text-secondary text-uppercase pb-2">Chapter 1</h6>
+                    <h1 class="display-4 mb-4">Propositions and Basic Terms</h1>
+                    </div>
+                </div>
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <div class="bg-light p-5 h-100">
+                        <h3 class="text-primary mb-4"><i class="fa fa-lightbulb mr-2"></i>What is a Proposition?</h3>
+                        <p class="mb-3">A <strong>proposition</strong> is a statement that is either <span class="text-success"><strong>true</strong></span> or <span class="text-danger"><strong>false</strong></span>, but not both.</p>
+                        <p>Logic is the science or study of how to evaluate arguments and reasoning. It provides the foundation for mathematical reasoning and computer operations.</p>
+                    </div>
+                            </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="bg-white p-5 h-100 border">
+                        <h4 class="text-primary mb-3">Examples:</h4>
+                        <div class="mb-3">
+                            <p class="text-success mb-1"><strong>✓ Proposition:</strong> "2 + 2 = 4" (True)</p>
+                            <p class="text-success mb-1"><strong>✓ Proposition:</strong> "Water boils at 100°C" (True)</p>
+                            <p class="text-danger mb-1"><strong>✓ Proposition:</strong> "The moon is made of cheese" (False)</p>
+                        </div>
+                        <div class="border-top pt-3">
+                            <p class="text-muted mb-1"><strong>✗ Not a Proposition:</strong> "What time is it?" (Question)</p>
+                            <p class="text-muted"><strong>✗ Not a Proposition:</strong> "Have a nice day!" (Command)</p>
+                            </div>
+                        </div>
+                            </div>
+                        </div>
+            <div class="row mt-4">
+                <div class="col-lg-12">
+                    <div class="bg-primary text-white p-4 rounded">
+                        <h4><i class="fa fa-info-circle mr-2"></i>Key Concepts</h4>
+                        <div class="row mt-3">
+                            <div class="col-md-4">
+                                <p><strong>Atomic/Simple Propositions:</strong> Single statements like "p" or "q"</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p><strong>Compound Propositions:</strong> Connected by logical operators (AND, OR, NOT)</p>
+                        </div>
+                            <div class="col-md-4">
+                                <p><strong>Truth Value:</strong> Either True (T) or False (F)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                    </div>
+                        </div>
+
+    <!-- Section 2: Logical Operators -->
+    <div id="operators" class="container-fluid py-5 bg-light">
+        <div class="container py-5">
+            <div class="row mb-5">
+                <div class="col-lg-12 text-center">
+                    <h6 class="d-inline-block position-relative text-secondary text-uppercase pb-2">Chapter 2</h6>
+                    <h1 class="display-4 mb-4">Logical Operators & Truth Tables</h1>
+                    <p class="lead">Click on each card to flip and learn about different logical operators</p>
+                        </div>
+                    </div>
+            
+            <!-- Conjunction Card -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="operator-card" onclick="flipCard(this)">
+                        <div class="operator-card-inner">
+                            <div class="operator-front">
+                                <h3 class="mb-3" style="font-size: 2.2rem;">Conjunction (∧)</h3>
+                                <p class="lead" style="font-size: 1.8rem;"><strong>p ∧ q</strong></p>
+                                <p class="mb-3" style="font-size: 1.3rem;">Read as: "p and q"</p>
+                                <p style="font-size: 1.1rem;"><small>Result is true when BOTH p AND q are true</small></p>
+                                <i class="fas fa-hand-point-left fa-2x" style="position: absolute; bottom: 20px; right: 20px;"></i>
+                        </div>
+                            <div class="operator-back">
+                                <h3 class="mb-3">Truth Table</h3>
+                                <table class="table table-bordered flipcard-table-black">
+                                    <thead>
+                                        <tr><th>p</th><th>q</th><th>p ∧ q</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td>T</td><td>T</td><td class="tt-true">T</td></tr>
+                                        <tr><td>T</td><td>F</td><td class="tt-false">F</td></tr>
+                                        <tr><td>F</td><td>T</td><td class="tt-false">F</td></tr>
+                                        <tr><td>F</td><td>F</td><td class="tt-false">F</td></tr>
+                                    </tbody>
+                                </table>
+                                <p class="mt-3"><strong>Examples:</strong></p>
+                                <ul class="text-left" style="color: #000;">
+                                    <li>"I have a pen AND a pencil"</li>
+                                    <li>"The student studies hard AND attends classes"</li>
+                                    <li>"It's sunny AND warm today"</li>
+                                    <li>"You must be 18 AND have ID to vote"</li>
+                                </ul>
+                                <p class="small mt-2" style="color: #000;"><em>All conditions must be true for the result to be true</em></p>
+                        </div>
+                    </div>
+                        </div>
+                        </div>
+                
+                <!-- Disjunction Card -->
+                <div class="col-md-6">
+                    <div class="operator-card" onclick="flipCard(this)">
+                        <div class="operator-card-inner">
+                            <div class="operator-front" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                <h3 class="mb-3" style="font-size: 2.2rem;">Disjunction (∨)</h3>
+                                <p class="lead" style="font-size: 1.8rem;"><strong>p ∨ q</strong></p>
+                                <p class="mb-3" style="font-size: 1.3rem;">Read as: "p or q"</p>
+                                <p style="font-size: 1.1rem;"><small>Result is true when AT LEAST ONE of p or q is true</small></p>
+                                <i class="fas fa-hand-point-left fa-2x" style="position: absolute; bottom: 20px; right: 20px;"></i>
+                    </div>
+                            <div class="operator-back" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                                <h3 class="mb-3">Truth Table</h3>
+                                <table class="table table-bordered flipcard-table-black">
+                                    <thead>
+                                        <tr><th>p</th><th>q</th><th>p ∨ q</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td>T</td><td>T</td><td class="tt-true">T</td></tr>
+                                        <tr><td>T</td><td>F</td><td class="tt-true">T</td></tr>
+                                        <tr><td>F</td><td>T</td><td class="tt-true">T</td></tr>
+                                        <tr><td>F</td><td>F</td><td class="tt-false">F</td></tr>
+                                    </tbody>
+                                </table>
+                                <p class="mt-3"><strong>Examples:</strong></p>
+                                <ul class="text-left" style="color: #000;">
+                                    <li>"I'll have coffee OR tea"</li>
+                                    <li>"You can pay with cash OR credit card"</li>
+                                    <li>"The meeting is Monday OR Tuesday"</li>
+                                    <li>"Students can choose math OR science"</li>
+                                </ul>
+                                <p class="small mt-2" style="color: #000;"><em>At least one condition must be true for the result to be true</em></p>
+                </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            
+            <!-- Negation Card -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="operator-card" onclick="flipCard(this)">
+                        <div class="operator-card-inner">
+                            <div class="operator-front" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                                <h3 class="mb-3" style="font-size: 2.2rem;">Negation (~ or ¬)</h3>
+                                <p class="lead" style="font-size: 1.8rem;"><strong>~p</strong></p>
+                                <p class="mb-3" style="font-size: 1.3rem;">Read as: "not p"</p>
+                                <p style="font-size: 1.1rem;"><small>Reverses the truth value</small></p>
+                                <i class="fas fa-hand-point-left fa-2x" style="position: absolute; bottom: 20px; right: 20px;"></i>
+                </div>
+                            <div class="operator-back" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                                <h3 class="mb-3">Truth Table</h3>
+                                <table class="table table-bordered flipcard-table-black">
+                                    <thead>
+                                        <tr><th>p</th><th>~p</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td>T</td><td class="tt-false">F</td></tr>
+                                        <tr><td>F</td><td class="tt-true">T</td></tr>
+                                    </tbody>
+                                </table>
+                                <p class="mt-3"><strong>Examples:</strong></p>
+                                <ul class="text-left" style="color: #000;">
+                                    <li>If p = "It is sunny", then ~p = "It is NOT sunny"</li>
+                                    <li>If p = "I am happy", then ~p = "I am NOT happy"</li>
+                                    <li>If p = "The door is open", then ~p = "The door is NOT open"</li>
+                                    <li>If p = "The test is easy", then ~p = "The test is NOT easy"</li>
+                                </ul>
+                                <p class="small mt-2" style="color: #000;"><em>Negation simply reverses the truth value</em></p>
+            </div>
+        </div>
+                        </div>
+                    </div>
+                
+                <!-- Conditional Card -->
+                <div class="col-md-6">
+                    <div class="operator-card" onclick="flipCard(this)">
+                        <div class="operator-card-inner">
+                            <div class="operator-front" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                                <h3 class="mb-3" style="font-size: 2.2rem;">Conditional (→)</h3>
+                                <p class="lead" style="font-size: 1.8rem;"><strong>p → q</strong></p>
+                                <p class="mb-3" style="font-size: 1.3rem;">Read as: "if p then q"</p>
+                                <p style="font-size: 1.1rem;"><small>False only when p is true AND q is false</small></p>
+                                <i class="fas fa-hand-point-left fa-2x" style="position: absolute; bottom: 20px; right: 20px;"></i>
+                    </div>
+                            <div class="operator-back" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                <h3 class="mb-3">Truth Table</h3>
+                                <table class="table table-bordered flipcard-table-black">
+                                    <thead>
+                                        <tr><th>p</th><th>q</th><th>p → q</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td>T</td><td>T</td><td class="tt-true">T</td></tr>
+                                        <tr><td>T</td><td>F</td><td class="tt-false">F</td></tr>
+                                        <tr><td>F</td><td>T</td><td class="tt-true">T</td></tr>
+                                        <tr><td>F</td><td>F</td><td class="tt-true">T</td></tr>
+                                    </tbody>
+                                </table>
+                                <p class="mt-3"><strong>Examples:</strong></p>
+                                <ul class="text-left" style="color: #000;">
+                                    <li>"If it rains, then I will bring an umbrella"</li>
+                                    <li>"If you study hard, then you will pass"</li>
+                                    <li>"If the temperature drops, then it will snow"</li>
+                                    <li>"If you press the button, then the light turns on"</li>
+                                </ul>
+                                <p class="small mt-2" style="color: #000;"><em>Only false when premise is true but conclusion is false</em></p>
+                </div>
+            </div>
+                        </div>
+                    </div>
+                    </div>
+            
+            <!-- Biconditional and Exclusive-OR -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="operator-card" onclick="flipCard(this)">
+                        <div class="operator-card-inner">
+                            <div class="operator-front" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);">
+                                <h3 class="mb-3" style="font-size: 2.2rem;">Biconditional (⟷)</h3>
+                                <p class="lead" style="font-size: 1.8rem;"><strong>p ⟷ q</strong></p>
+                                <p class="mb-3" style="font-size: 1.3rem;">Read as: "p if and only if q"</p>
+                                <p style="font-size: 1.1rem;"><small>True when p and q have the SAME truth value</small></p>
+                                <i class="fas fa-hand-point-left fa-2x" style="position: absolute; bottom: 20px; right: 20px;"></i>
+                </div>
+                            <div class="operator-back" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">
+                                <h3 class="mb-3">Truth Table</h3>
+                                <table class="table table-bordered flipcard-table-black">
+                                    <thead>
+                                        <tr><th>p</th><th>q</th><th>p ⟷ q</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td>T</td><td>T</td><td class="tt-true">T</td></tr>
+                                        <tr><td>T</td><td>F</td><td class="tt-false">F</td></tr>
+                                        <tr><td>F</td><td>T</td><td class="tt-false">F</td></tr>
+                                        <tr><td>F</td><td>F</td><td class="tt-true">T</td></tr>
+                                    </tbody>
+                                </table>
+                                <p class="mt-3"><strong>Examples:</strong></p>
+                                <ul class="text-left" style="color: #000;">
+                                    <li>"I will pass if and only if I study hard"</li>
+                                    <li>"The light is on if and only if the switch is up"</li>
+                                    <li>"You can vote if and only if you are 18"</li>
+                                    <li>"The door opens if and only if the key is turned"</li>
+                                </ul>
+                                <p class="small mt-2" style="color: #000;"><em>Both statements must have the same truth value</em></p>
+            </div>
+                        </div>
+                    </div>
+                    </div>
+                
+                <div class="col-md-6">
+                    <div class="operator-card" onclick="flipCard(this)">
+                        <div class="operator-card-inner">
+                            <div class="operator-front" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);">
+                                <h3 class="mb-3" style="font-size: 2.2rem;">Exclusive-OR (⨁)</h3>
+                                <p class="lead" style="font-size: 1.8rem;"><strong>p ⨁ q</strong></p>
+                                <p class="mb-3" style="font-size: 1.3rem;">Read as: "p exclusive-or q"</p>
+                                <p style="font-size: 1.1rem;"><small>True when p and q have DIFFERENT truth values</small></p>
+                                <i class="fas fa-hand-point-left fa-2x" style="position: absolute; bottom: 20px; right: 20px;"></i>
+                </div>
+                            <div class="operator-back" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);">
+                                <h3 class="mb-3">Truth Table</h3>
+                                <table class="table table-bordered flipcard-table-black">
+                                    <thead>
+                                        <tr><th>p</th><th>q</th><th>p ⨁ q</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td>T</td><td>T</td><td class="tt-false">F</td></tr>
+                                        <tr><td>T</td><td>F</td><td class="tt-true">T</td></tr>
+                                        <tr><td>F</td><td>T</td><td class="tt-true">T</td></tr>
+                                        <tr><td>F</td><td>F</td><td class="tt-false">F</td></tr>
+                                    </tbody>
+                                </table>
+                                <p class="mt-3"><strong>Examples:</strong></p>
+                                <ul class="text-left" style="color: #000;">
+                                    <li>"Either coffee OR tea, but not both"</li>
+                                    <li>"You can go left OR right, but not both ways"</li>
+                                    <li>"The answer is true OR false, but not both"</li>
+                                    <li>"You can have cake OR ice cream, but not both"</li>
+                                </ul>
+                                <p class="small mt-2" style="color: #000;"><em>True when exactly one condition is true</em></p>
+            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+                        </div>
+
+    <!-- Section 3: Compound Propositions -->
+    <div id="compounds" class="container-fluid py-5">
+        <div class="container py-5">
+            <div class="row mb-5">
+                <div class="col-lg-12 text-center">
+                    <h6 class="d-inline-block position-relative text-secondary text-uppercase pb-2">Chapter 3</h6>
+                    <h1 class="display-4 mb-4">Compound Propositions & Truth Tables</h1>
+                    </div>
+                    </div>
+            <div class="row">
+                <div class="col-lg-12 mb-4">
+                    <div class="bg-light p-5">
+                        <h3 class="mb-4">Building Compound Propositions</h3>
+                        <p class="lead">Compound propositions are formed by combining simple propositions using logical operators.</p>
+                        
+                        <div class="row mt-4">
+                            <div class="col-md-6">
+                                <h4 class="text-primary">Example 1: (~p ∨ ~q)</h4>
+                                <p>"Not p OR not q"</p>
+                                <p>This means: either p is false, or q is false, or both.</p>
+                </div>
+                            <div class="col-md-6">
+                                <table class="table truth-table">
+                                    <thead>
+                                        <tr>
+                                            <th>p</th><th>q</th><th>~p</th><th>~q</th><th>~p ∨ ~q</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td>T</td><td>T</td><td class="tt-false">F</td><td class="tt-false">F</td><td class="tt-false">F</td></tr>
+                                        <tr><td>T</td><td>F</td><td class="tt-false">F</td><td class="tt-true">T</td><td class="tt-true">T</td></tr>
+                                        <tr><td>F</td><td>T</td><td class="tt-true">T</td><td class="tt-false">F</td><td class="tt-true">T</td></tr>
+                                        <tr><td>F</td><td>F</td><td class="tt-true">T</td><td class="tt-true">T</td><td class="tt-true">T</td></tr>
+                                    </tbody>
+                                </table>
+            </div>
+                        </div>
+                    </div>
+                    </div>
+                
+                <div class="col-lg-12 mt-4">
+                    <div class="container-fluid py-5 bg-light">
+                        <h4 class="mb-4 text-dark"><i class="fa fa-calculator mr-2"></i>More Examples of Compound Propositions</h4>
+
+                        <h5 class="mt-3 text-dark">Example 2: (p ∧ (q ∨ ~r))</h5>
+                        <p class="text-dark">This means: <em>p AND (q OR NOT r)</em>. The proposition is true only if p is true, and at least one of q or not r is true.</p>
+                        <div class="table-responsive">
+                            <table class="table truth-table bg-white text-dark">
+                                <thead>
+                                    <tr><th>p</th><th>q</th><th>r</th><th>~r</th><th>q ∨ ~r</th><th>p ∧ (q ∨ ~r)</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>T</td><td>T</td><td>T</td><td class="tt-false">F</td><td class="tt-true">T</td><td class="tt-true">T</td></tr>
+                                    <tr><td>T</td><td>T</td><td>F</td><td class="tt-true">T</td><td class="tt-true">T</td><td class="tt-true">T</td></tr>
+                                    <tr><td>T</td><td>F</td><td>T</td><td class="tt-false">F</td><td class="tt-false">F</td><td class="tt-false">F</td></tr>
+                                    <tr><td>T</td><td>F</td><td>F</td><td class="tt-true">T</td><td class="tt-true">T</td><td class="tt-true">T</td></tr>
+                                    <tr><td>F</td><td>T</td><td>T</td><td class="tt-false">F</td><td class="tt-true">T</td><td class="tt-false">F</td></tr>
+                                    <tr><td>F</td><td>T</td><td>F</td><td class="tt-true">T</td><td class="tt-true">T</td><td class="tt-false">F</td></tr>
+                                    <tr><td>F</td><td>F</td><td>T</td><td class="tt-false">F</td><td class="tt-false">F</td><td class="tt-false">F</td></tr>
+                                    <tr><td>F</td><td>F</td><td>F</td><td class="tt-true">T</td><td class="tt-true">T</td><td class="tt-false">F</td></tr>
+                                </tbody>
+                            </table>
+                </div>
+
+                        <h5 class="mt-5 text-dark">Example 3: ((p → q) ⟷ (~q → ~p))</h5>
+                        <p class="text-dark">This compares a conditional and its contrapositive: <em>p → q</em> is logically equivalent to <em>~q → ~p</em>. Let's see their truth tables work step by step.</p>
+                        <div class="table-responsive">
+                            <table class="table truth-table bg-white text-dark">
+                                <thead>
+                                    <tr><th>p</th><th>q</th><th>~p</th><th>~q</th><th>p → q</th><th>~q → ~p</th><th>Equivalence?</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>T</td><td>T</td><td class="tt-false">F</td><td class="tt-false">F</td><td class="tt-true">T</td><td class="tt-true">T</td><td class="tt-true">T</td></tr>
+                                    <tr><td>T</td><td>F</td><td class="tt-false">F</td><td class="tt-true">T</td><td class="tt-false">F</td><td class="tt-false">F</td><td class="tt-true">T</td></tr>
+                                    <tr><td>F</td><td>T</td><td class="tt-true">T</td><td class="tt-false">F</td><td class="tt-true">T</td><td class="tt-true">T</td><td class="tt-true">T</td></tr>
+                                    <tr><td>F</td><td>F</td><td class="tt-true">T</td><td class="tt-true">T</td><td class="tt-true">T</td><td class="tt-true">T</td><td class="tt-true">T</td></tr>
+                                </tbody>
+                            </table>
+            </div>
+                        <ul class="mt-3 text-dark">
+                            <li><strong>(p → q):</strong> False only if p is true and q is false.</li>
+                            <li><strong>Contrapositive (~q → ~p):</strong> False only if ~q is true and ~p is false (i.e., q is false, p is true).</li>
+                            <li>The last column shows both are logically equivalent (all T) for each row – this is a classic example of logical equivalence.</li>
+                        </ul>
+        </div>
+                                </div>
+                            </div>
+                                </div>
+                            </div>
+
+    <!-- Section 4: Logical Equivalence -->
+    <div id="equivalence" class="container-fluid py-5 bg-light">
+        <div class="container py-5">
+            <div class="row mb-5">
+                <div class="col-lg-12 text-center">
+                    <h6 class="d-inline-block position-relative text-secondary text-uppercase pb-2">Chapter 4</h6>
+                    <h1 class="display-4 mb-4">Logical Equivalence & Classification</h1>
+                        </div>
+                                </div>
+            
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="bg-warning text-white p-4 h-100 rounded">
+                        <h3><i class="fa fa-check-circle mr-2"></i>Tautology</h3>
+                        <p class="mt-3">A <strong>tautology</strong> is a logic statement that is always true, no matter what values its pieces have. The result column in its truth table is always T (true).</p>
+                        <p class="my-2"><strong>Classic Formula:</strong> <code>
+                            <span style="color: rgb(0, 0, 0);">p ∧ ~p</span>
+                          </code> (p OR NOT p)</p>
+                        <p class="small my-1 text-white"><em>where p: "It is raining"</em></p>
+                        <table class="table table-sm table-bordered bg-white text-dark flipcard-table-black mt-2 mb-2 chapter4-table-black" style="color:#222;">
+                            <thead><tr><th>p</th><th>~p</th><th>p ∨ ~p</th></tr></thead>
+                            <tbody>
+                                <tr><td>T</td><td class="tt-false">F</td><td class="tt-true">T</td></tr>
+                                <tr><td>F</td><td class="tt-true">T</td><td class="tt-true">T</td></tr>
+                            </tbody>
+                        </table>
+                        <p class="small">Notice: No matter if p is true or false, <code>
+                            <span style="color: rgb(0, 0, 0);">p ∧ ~p</span>
+                          </code> is always true!</p>
+                        <p class="mt-3"><strong>Real-world Example:</strong> "It is raining OR it is not raining." This statement is logically always true.</p>
+                            </div>
+                            </div>
+                <div class="col-md-4">
+                    <div class="bg-danger text-white p-4 h-100 rounded">
+                        <h3><i class="fa fa-times-circle mr-2"></i>Contradiction</h3>
+                        <p class="mt-3">A <strong>contradiction</strong> is a statement that is always false: it's impossible for it to ever come out true, no matter what.</p>
+                        <p class="my-2"><strong>Classic Formula:</strong> <code>
+                            <span style="color: rgb(0, 0, 0);">p ∧ ~p</span>
+                          </code>
+                           (p AND NOT p)</p>
+                        <p class="small my-1 text-white"><em>where p: "The number is even"</em></p>
+                        <table class="table table-sm table-bordered bg-white text-dark flipcard-table-black mt-2 mb-2 chapter4-table-black" style="color:#222;">
+                            <thead><tr><th>p</th><th>~p</th><th>p ∧ ~p</th></tr></thead>
+                            <tbody>
+                                <tr><td>T</td><td class="tt-false">F</td><td class="tt-false">F</td></tr>
+                                <tr><td>F</td><td class="tt-true">T</td><td class="tt-false">F</td></tr>
+                            </tbody>
+                        </table>
+                        <p class="small">Notice: No matter the input, <code>
+                            <span style="color: rgb(0, 0, 0);">p ∧ ~p</span>
+                          </code> is always false.</p>
+                        <p class="mt-3"><strong>Real-world Example:</strong> "This number is both even AND odd." This can never be true.</p>
+                        </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="bg-info text-white p-4 h-100 rounded">
+                        <h3><i class="fa fa-exchange-alt mr-2"></i>Contingency</h3>
+                        <p class="mt-3">A <strong>contingency</strong> is a statement whose truth depends on its components; sometimes it's true, sometimes false. Most real-world statements are contingencies.</p>
+                        <p class="my-2"><strong>Classic Formula:</strong> <code>
+                            <span style="color: rgb(0, 0, 0);">p ∧ ~p</span>
+                          </code> (p AND q)</p>
+                        <p class="small my-1 text-white"><em>where p: "Student passes the exam"<br>where q: "Student attends all classes"</em></p>
+                        <table class="table table-sm table-bordered bg-white text-dark flipcard-table-black mt-2 mb-2 chapter4-table-black" style="color:#222;">
+                            <thead><tr><th>p</th><th>q</th><th>p ∧ q</th></tr></thead>
+                            <tbody>
+                                <tr><td>T</td><td>T</td><td class="tt-true">T</td></tr>
+                                <tr><td>T</td><td>F</td><td class="tt-false">F</td></tr>
+                                <tr><td>F</td><td>T</td><td class="tt-false">F</td></tr>
+                                <tr><td>F</td><td>F</td><td class="tt-false">F</td></tr>
+                            </tbody>
+                        </table>
+                        <p class="small">Depending on p and q, <code>
+                            <span style="color: rgb(0, 0, 0);">p ∧ ~p</span>
+                          </code> can be true OR false!</p>
+                        <p class="mt-3"><strong>Real-world Example:</strong> "A student passes the exam AND attends all classes." This will be true only if a student does both; otherwise, it's false.</p>
+            </div>
+        </div>
+    </div>
+            
+            <div class="row mt-4">
+                <div class="col-lg-12">
+                    <div class="bg-white p-5 border rounded">
+                        <h4 class="text-primary mb-4"><i class="fa fa-code mr-2"></i>Logical Equivalence</h4>
+                        <p class="lead">Two propositions are <strong>logically equivalent</strong> if they have identical truth tables—same truth value for all possible combinations.</p>
+                        
+                        <div class="row mt-4">
+                            <div class="col-md-6">
+                                <h5>Example: p → q is equivalent to ~q → ~p</h5>
+                                <table class="table table-bordered mt-3">
+                                    <thead class="bg-secondary text-white">
+                                        <tr><th>p</th><th>q</th><th>p → q</th><th>~q → ~p</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td>T</td><td>T</td><td class="tt-true">T</td><td class="tt-true">T</td></tr>
+                                        <tr><td>T</td><td>F</td><td class="tt-false">F</td><td class="tt-false">F</td></tr>
+                                        <tr><td>F</td><td>T</td><td class="tt-true">T</td><td class="tt-true">T</td></tr>
+                                        <tr><td>F</td><td>F</td><td class="tt-true">T</td><td class="tt-true">T</td></tr>
+                                    </tbody>
+                                </table>
+                                <p class="text-success"><strong>✓ These are equivalent (same truth values in all rows)!</strong></p>
+            </div>
+                            <div class="col-md-6">
+                                <p><strong>Important Logical Equivalences:</strong></p>
+                                <ul class="list-group">
+                                    <li class="list-group-item">~(~p) ≡ p (double negation)</li>
+                                    <li class="list-group-item">p ∧ q ≡ q ∧ p (commutative)</li>
+                                    <li class="list-group-item">p ∨ q ≡ q ∨ p (commutative)</li>
+                                    <li class="list-group-item">(p ∧ q) ∧ r ≡ p ∧ (q ∧ r) (associative)</li>
+                                    <li class="list-group-item">~(p ∧ q) ≡ ~p ∨ ~q (De Morgan's law)</li>
+                                    <li class="list-group-item">~(p ∨ q) ≡ ~p ∧ ~q (De Morgan's law)</li>
+                                </ul>
+                        </div>
+                    </div>
+                </div>
+                        </div>
+                    </div>
+                </div>
+                        </div>
+
+
+    <!-- Quiz Section -->
+    <div id="quiz" class="container-fluid py-5 bg-light">
+        <div class="container py-5">
+            <div class="row mb-5">
+                <div class="col-lg-12 text-center">
+                    <h6 class="d-inline-block position-relative text-secondary text-uppercase pb-2">Test Your Knowledge</h6>
+                    <h1 class="display-4 mb-4">Quiz - 20 Questions</h1>
+                    </div>
+                </div>
+
+            <!-- Name Input Section -->
+            <div id="nameInputSection" class="text-center mb-5">
+                <div class="bg-white p-4 rounded shadow">
+                    <h3 class="mb-3">Enter Your Full Name to Begin</h3>
+                    <div class="form-group" style="max-width: 400px; margin: 0 auto;">
+                        <input type="text" id="studentName" class="form-control form-control-lg text-center" placeholder="Your Full Name" autocomplete="off">
+                                </div>
+                    <button class="btn btn-primary btn-lg mt-3" onclick="startQuiz()">Start Quiz</button>
+                            </div>
+                        </div>
+
+            <!-- Progress Bar -->
+            <div id="progressSection" class="mb-5" style="display: none;">
+                <h4 class="text-center mb-3">Progress: <span id="progressText">0/20</span></h4>
+                <div style="position: relative; width: 100%; height: 50px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); overflow: hidden;">
+                    <div id="progressBar" style="position: absolute; top: 0; left: 0; width: 5%; height: 100%; background: linear-gradient(135deg, #4caf50 0%, #43e97b 100%); border-radius: 25px; transition: width 0.5s ease; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: bold; color: white; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">
+                        5%
+                                </div>
+                            </div>
+                        </div>
+
+            <!-- Quiz Container -->
+            <div id="quizContainer" style="display: none;"></div>
+            
+            <!-- Results Section -->
+            <div id="resultsSection" class="text-center mt-5" style="display: none;">
+                <div class="bg-white p-5 rounded shadow">
+                    <h2 class="mb-4">Quiz Complete!</h2>
+                    <div id="resultsContent"></div>
+                    <button class="btn btn-success btn-lg mt-3" onclick="downloadCertificate()">Download Result (JPEG)</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary Section -->
+    <div id="summary" class="container-fluid py-5 section-highlight">
+        <div class="container py-5">
+            <div class="row">
+                            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                        <!-- Source & Credits Section -->
+                        <div class="row mt-5">
+                            <div class="col-lg-12">
+                                <div class="text-center mb-4"> 
+                                    <h2 class="display-4 mb-3 text-white">Source & Credits</h2>
+                                    <p class="lead text-white">Educational content and website development</p>
+                            </div>
+                        </div>
+                            </div>
+                        
+                        <div class="row">
+                            <!-- Source Information -->
+                            <div class="col-lg-6 mb-4">
+                                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);" class="text-white p-5 rounded shadow h-100">
+                                    <div class="text-center mb-4">
+                                        <i class="fa fa-book fa-4x text-white mb-3"></i>
+                                        <h4 class="mb-3">Educational Source</h4>
+                            </div>
+                                    <div class="text-center">
+                                        <h5 class="mb-3">Logic and Computer Addition</h5>
+                                        <p class="mb-4" style="opacity: 0.9;">Comprehensive educational document covering Boolean logic, propositions, and computer operations</p>
+                                        <a href="https://www.scribd.com/document/552016189/Logic-and-Computer-Addition" target="_blank" class="btn btn-light btn-lg">
+                                            <i class="fa fa-external-link-alt mr-2"></i>View Source Document
+                                        </a>
+                        </div>
+                            </div>
+                            </div>
+                            
+                            <!-- Development Team -->
+                            <div class="col-lg-6 mb-4">
+                                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);" class="text-white p-5 rounded shadow h-100">
+                                    <div class="text-center mb-4">
+                                        <i class="fa fa-users fa-4x mb-3"></i>
+                                        <h4 class="mb-3">Development Team</h4>
+                        </div>
+                                    <div class="text-center">
+                                        <h5 class="mb-4">Website Created By</h5>
+                                        <div class="row">
+                                            <div class="col-12 mb-3">
+                                                <div class="bg-white text-dark p-3 rounded">
+                                                    <i class="fa fa-user-circle fa-2x text-primary mb-2"></i>
+                                                    <h6 class="mb-1">Angel Rubia Galapon</h6>
+                    </div>
+                </div>
+                                            <div class="col-12 mb-3">
+                                                <div class="bg-white text-dark p-3 rounded">
+                                                    <i class="fa fa-user-circle fa-2x text-success mb-2"></i>
+                                                    <h6 class="mb-1">Juliana Mae Ines</h6>
+                    </div>
+                                </div>
+                                            <div class="col-12">
+                                                <div class="bg-white text-dark p-3 rounded">
+                                                    <i class="fa fa-user-circle fa-2x text-info mb-2"></i>
+                                                    <h6 class="mb-1">Jhun Mark Obreros</h6>
+                                </div>
+                            </div>
+                            </div>
+                            </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+                        
+                        <div class="text-center mt-5">
+                            <a href="#home" class="btn btn-lg btn-primary mt-3">Back to Top</a>
+                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    <!-- Footer -->
+    <div class="container-fluid bg-dark text-white-50 py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p class="m-0">Copyright © 2025 Logic and Computer Addition Educational Website. Educational Purpose Only.</p>
+                </div>
+                </div>
+            </div>
+        </div>
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary rounded-0 btn-lg-square back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/counterup/counterup.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
+    
+    <!-- Custom Interactive JavaScript -->
+    <script>
+        // Flip card function
+        function flipCard(card) {
+            card.classList.toggle('flipped');
+        }
+        
+        // Toggle bit function for binary demo
+        let bitStates = {
+            'bit1a': true, 'bit1b': true,
+            'bit2a': true, 'bit2b': true
+        };
+        
+        function toggleBit(bitId, bitValue) {
+            const element = document.getElementById(bitId);
+            bitStates[bitId] = !bitStates[bitId];
+            element.textContent = bitStates[bitId] ? '1' : '0';
+            element.classList.toggle('active', bitStates[bitId]);
+            calculateBinary();
+        }
+        
+        function calculateBinary() {
+            const bit1 = bitStates['bit1b'] ? 1 : 0;
+            const bit2 = bitStates['bit2b'] ? 1 : 0;
+            const carry = (bitStates['bit1a'] && bitStates['bit2a']) ? 1 : 0;
+            
+            const sum = (bit1 + bit2 + carry) % 2;
+            const newCarry = ((bit1 + bit2 + carry) >= 2) ? 1 : 0;
+            
+            document.getElementById('result').textContent = newCarry * 2 + sum;
+            document.getElementById('carry').textContent = newCarry;
+        }
+        
+        // Quiz State
+        let quizState = {
+            studentName: '',
+            currentQuestion: 0,
+            score: 0,
+            selectedAnswers: [],
+            questions: [
+                { q: "What is a proposition?", options: ["A question", "A statement that is either true or false", "A mathematical equation", "A computer program"], correct: 1 },
+                { q: "Which operator means 'AND'?", options: ["→", "∨", "∧", "~"], correct: 2 },
+                { q: "Which operator means 'OR'?", options: ["→", "∨", "∧", "~"], correct: 1 },
+                { q: "What does ∧ mean?", options: ["AND", "OR", "NOT", "IF-THEN"], correct: 0 },
+                { q: "What does ∨ mean?", options: ["AND", "OR", "NOT", "IF-THEN"], correct: 1 },
+                { q: "What does ~ mean?", options: ["AND", "OR", "NOT", "IF-THEN"], correct: 2 },
+                { q: "What does → mean?", options: ["AND", "OR", "NOT", "IF-THEN"], correct: 3 },
+                { q: "In p ∧ q, when is the result TRUE?", options: ["When p is true", "When q is true", "When BOTH are true", "When at least one is true"], correct: 2 },
+                { q: "In p ∨ q, when is the result TRUE?", options: ["Only when both are true", "Only when one is true", "When AT LEAST ONE is true", "Never"], correct: 2 },
+                { q: "A truth table for 2 variables has how many rows?", options: ["2", "3", "4", "5"], correct: 2 },
+                { q: "What is a tautology?", options: ["Always false", "Always true", "Sometimes true", "Cannot determine"], correct: 1 },
+                { q: "What is a contradiction?", options: ["Always false", "Always true", "Sometimes false", "Cannot determine"], correct: 0 },
+                { q: "In computers, what does 0 represent?", options: ["True", "False", "Neither", "Both"], correct: 1 },
+                { q: "In computers, what does 1 represent?", options: ["True", "False", "Neither", "Both"], correct: 0 },
+                { q: "What is ~T (not True)?", options: ["True", "False", "Cannot tell", "Invalid"], correct: 1 },
+                { q: "If p is true, what is ~p?", options: ["True", "False", "Depends", "Cannot tell"], correct: 1 },
+                { q: "p ∧ q means:", options: ["p AND q", "p OR q", "NOT p", "p IF q"], correct: 0 },
+                { q: "p ∨ q means:", options: ["p AND q", "p OR q", "NOT p", "p IF q"], correct: 1 },
+                { q: "~p means:", options: ["p AND q", "p OR q", "NOT p", "p IF q"], correct: 2 },
+                { q: "p → q means:", options: ["p AND q", "p OR q", "NOT p", "IF p THEN q"], correct: 3 }
+            ]
+        };
+
+        function startQuiz() {
+            const name = document.getElementById('studentName').value.trim();
+            if (!name) {
+                alert('Please enter your full name to continue!');
+                return;
+            }
+            
+            quizState.studentName = name;
+            document.getElementById('nameInputSection').style.display = 'none';
+            document.getElementById('progressSection').style.display = 'block';
+            document.getElementById('quizContainer').style.display = 'block';
+            
+            updateQuiz();
+        }
+
+        function updateQuiz() {
+            if (quizState.currentQuestion >= quizState.questions.length) {
+                showResults();
+                return;
+            }
+            
+            const q = quizState.questions[quizState.currentQuestion];
+            const progress = ((quizState.currentQuestion) / quizState.questions.length) * 100;
+            const minProgress = 5;
+            const displayProgress = progress > 0 ? progress : minProgress;
+            
+            document.getElementById('progressBar').style.width = displayProgress + '%';
+            if (displayProgress >= 30) {
+                document.getElementById('progressBar').textContent = displayProgress.toFixed(0) + '%';
+            } else {
+                document.getElementById('progressBar').textContent = '';
+            }
+            document.getElementById('progressText').textContent = quizState.currentQuestion + '/' + quizState.questions.length;
+            
+            // Display question
+            let html = '<div class="quiz-question"><h4><strong>Question ' + (quizState.currentQuestion + 1) + ':</strong> ' + q.q + '</h4>';
+            
+            q.options.forEach((opt, idx) => {
+                const letter = String.fromCharCode(65 + idx);
+                html += '<div class="quiz-option" onclick="selectAnswer(' + idx + ')">' + letter + ') ' + opt + '</div>';
+            });
+            
+            html += '</div>';
+            document.getElementById('quizContainer').innerHTML = html;
+        }
+
+        function selectAnswer(selectedIdx) {
+            const q = quizState.questions[quizState.currentQuestion];
+            const isCorrect = selectedIdx === q.correct;
+            
+            quizState.selectedAnswers.push({ selectedIdx, isCorrect });
+            if (isCorrect) {
+                quizState.score++;
+            }
+            
+            // Animate answer
+            const options = document.querySelectorAll('.quiz-option');
+            options.forEach((opt, idx) => {
+                opt.onclick = null;
+                if (idx === q.correct) {
+                    setTimeout(() => {
+                        opt.style.background = '#4caf50';
+                        opt.style.color = 'white';
+                    }, 100);
+                } else if (idx === selectedIdx && !isCorrect) {
+                    opt.style.background = '#f44336';
+                    opt.style.color = 'white';
+                }
+            });
+            
+            // Auto-advance after 3 seconds
+            setTimeout(() => {
+                quizState.currentQuestion++;
+                updateQuiz();
+            }, 1000);
+        }
+
+        function showResults() {
+            document.getElementById('progressBar').style.width = '100%';
+            document.getElementById('progressBar').textContent = '100%';
+            document.getElementById('progressText').textContent = quizState.questions.length + '/' + quizState.questions.length;
+            
+            document.getElementById('quizContainer').style.display = 'none';
+            document.getElementById('resultsSection').style.display = 'block';
+            
+            const percentage = (quizState.score / quizState.questions.length) * 100;
+            const grade = percentage >= 90 ? 'A' : percentage >= 80 ? 'B' : percentage >= 70 ? 'C' : percentage >= 60 ? 'D' : 'F';
+            
+            document.getElementById('resultsContent').innerHTML = 
+                '<h3 style="color: #333; margin-bottom: 20px;">Student: ' + quizState.studentName + '</h3>' +
+                '<div style="font-size: 48px; font-weight: bold; color: #4caf50; margin: 20px 0;">' + percentage.toFixed(1) + '%</div>' +
+                '<h4 style="color: #666;">Grade: ' + grade + '</h4>' +
+                '<p style="font-size: 18px; margin: 10px 0;">Score: ' + quizState.score + ' out of ' + quizState.questions.length + '</p>' +
+                '<p style="color: #999; font-size: 14px;">Date: ' + new Date().toLocaleDateString() + '</p>';
+        }
+
+        function downloadCertificate() {
+            // Create a simple score summary image
+            const canvas = document.createElement('canvas');
+            canvas.width = 1000;
+            canvas.height = 600;
+            const ctx = canvas.getContext('2d');
+            
+            // Background
+            ctx.fillStyle = '#f8f9fa';
+            ctx.fillRect(0, 0, 1000, 600);
+            
+            // Border
+            ctx.strokeStyle = '#4caf50';
+            ctx.lineWidth = 8;
+            ctx.strokeRect(40, 40, 920, 520);
+            
+            // Title
+            ctx.fillStyle = '#333';
+            ctx.font = 'bold 50px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Quiz Result Summary', 500, 120);
+            
+            // Student Name
+            ctx.font = 'bold 40px Arial';
+            ctx.fillStyle = '#4caf50';
+            ctx.fillText('' + quizState.studentName, 500, 200);
+            
+            // Score
+            const percentage = (quizState.score / quizState.questions.length) * 100;
+            const grade = percentage >= 90 ? 'A' : percentage >= 80 ? 'B' : percentage >= 70 ? 'C' : percentage >= 60 ? 'D' : 'F';
+            
+            ctx.font = 'bold 36px Arial';
+            ctx.fillStyle = '#333';
+            ctx.fillText('Score: ' + quizState.score + ' / ' + quizState.questions.length, 500, 280);
+            ctx.fillText('Percentage: ' + percentage.toFixed(1) + '%', 500, 340);
+            ctx.fillText('Grade: ' + grade, 500, 400);
+            
+            // Date
+            ctx.font = '28px Arial';
+            ctx.fillStyle = '#666';
+            ctx.fillText('Date: ' + new Date().toLocaleDateString(), 500, 480);
+            
+            // Subject
+            ctx.font = '24px Arial';
+            ctx.fillStyle = '#999';
+            ctx.fillText('MMW: Logic and Computer Addition', 500, 540);
+            
+            // Download
+            const link = document.createElement('a');
+            link.download = 'Quiz-Result-' + quizState.studentName + '.jpg';
+            link.href = canvas.toDataURL('image/jpeg', 0.95);
+            link.click();
+        }
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
